@@ -11,7 +11,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
         name = References.MOD_NAME,
         modid = References.MOD_ID,
         version = References.VERSION,
-        dependencies = References.DEPENDENCIES
+        dependencies = References.DEPENDENCIES,
+        acceptedMinecraftVersions = "1.10.2"
 )
 public class Core {
     @SuppressWarnings("unused")

@@ -13,7 +13,10 @@ buildscript {
 apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.11.2-17.3.0001"
+ext.configFile = file('build.properties')
+ext.config = parseConfig(configFile)
+
+version = "${config.mc_version}-${config.year}.${config.month}.${config.build_number}"
 group = "com.github.txuritan"
 archivesBaseName = "txcore"
 
@@ -28,9 +31,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2228"
+    version = "1.10.2-12.18.3.2185"
     runDir = "run"
-    mappings = "snapshot_20170301"
+    mappings = "stable_29"
     makeObfSourceJar = true
 }
 
@@ -53,12 +56,12 @@ processResources {
     }
 }
 
-task deobfJar(type: Jar, dependsOn: "reobfJar") {
+task txDeobfJar(type: Jar, dependsOn: "reobfJar") {
     from sourceSets.main.output
     classifier = "dev"
 }
 
-task sourcesJar(type: Jar, dependsOn: "sourceJar") {
+task txSourcesJar(type: Jar, dependsOn: "sourceJar") {
     from sourceSets.main.allJava
     classifier = "sources"
 }
@@ -66,9 +69,13 @@ task sourcesJar(type: Jar, dependsOn: "sourceJar") {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId "com.github.txuritan"
+            artifactId "txcore"
+            version "${config.mc_version}-${config.year}.${config.month}.${config.build_number}"
+
             from components.java
-            artifact deobfJar
-            artifact sourcesJar
+            artifact txDeobfJar
+            artifact txSourcesJar
         }
     }
     repositories {
@@ -77,3 +84,20 @@ publishing {
         }
     }
 }
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
+
+task incrementBuildNumber {
+    config.build_number = (config.build_number.toString().toInteger()) + 1
+    configFile.withWriter {
+        config.toProperties().store(it, "")
+    }
+}
+
+defaultTasks 'clean', 'build', 'incrementBuildNumber'

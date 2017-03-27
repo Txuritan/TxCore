@@ -1,0 +1,25 @@
+[
+  {
+    "modid": "txcore",
+    "name": "TXCore",
+    "description": "Txuritan's Core... Well Not Really",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://txuritan.github.io/core/",
+    "updateUrl": "https://txuritan.github.io/core/update.json",
+    "authorList": [
+      "Txuritan",
+      "yu02241",
+      "NagiiK",
+      "PIXI"
+    ],
+    "credits": "\n    INI4j",
+    "logoFile": "",
+    "screenshots": [
+      ""
+    ],
+    "dependencies": []
+  }
+]
+
+

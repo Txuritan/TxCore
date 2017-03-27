@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "1.11.2-17.3.0001"
+group = "com.github.txuritan"
+archivesBaseName = "txcore"
+
+idea { module { inheritOutputDirs = true } }
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+minecraft {
+    version = "1.11.2-13.20.0.2228"
+    runDir = "run"
+    mappings = "snapshot_20170301"
+    makeObfSourceJar = true
+}
+
+dependencies {
+
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+task deobfJar(type: Jar, dependsOn: "reobfJar") {
+    from sourceSets.main.output
+    classifier = "dev"
+}
+
+task sourcesJar(type: Jar, dependsOn: "sourceJar") {
+    from sourceSets.main.allJava
+    classifier = "sources"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact deobfJar
+            artifact sourcesJar
+        }
+    }
+    repositories {
+        maven {
+            url "file://C:/Users/txurt/maven-repository"
+        }
+    }
+}

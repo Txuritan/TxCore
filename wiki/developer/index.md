@@ -118,17 +118,3 @@ testString = yay it works
 [txcore]
 debug = false
 ```
-
-<div class="grid">
-<div class="col col-3of3">
-<div class="panel">
-<div class="panel-header">
-<h3>Other Wikis</h3>
-</div>
-<div class="panel-body">
-<a href="/core/wiki/" class="button text-center">TXCore</a>
-<a href="/metal/wiki/" class="button text-center">Metal</a>
-</div>
-</div>
-</div>
-</div>
